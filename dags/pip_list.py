@@ -23,5 +23,5 @@ with DAG(
 
     show_packages = BashOperator(
         task_id="show_packages",
-        bash_command="pip3 list"
+        bash_command="pip list"
     )
