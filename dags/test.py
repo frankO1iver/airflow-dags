@@ -1,6 +1,7 @@
 from airflow import DAG
 from airflow.providers.standard.operators.python import PythonOperator
 from datetime import datetime, timedelta
+import time
 
 default_args = {
     'owner': 'airflow',
@@ -14,6 +15,7 @@ default_args = {
 
 def hello_world():
     print("Hello from Airflow in Kubernetes!")
+    time.sleep(120)
     return "Success"
 
 with DAG(
@@ -23,8 +25,9 @@ with DAG(
     schedule=timedelta(days=1),  # было schedule_interval
     catchup=False,
 ) as dag:
-    
-    task1 = PythonOperator(
-        task_id='hello_task',
-        python_callable=hello_world,
-    )
+
+    for i in range(10):
+        task = PythonOperator(
+            task_id=f'hello_task_{i+1}',
+            python_callable=hello_world,
+        )
