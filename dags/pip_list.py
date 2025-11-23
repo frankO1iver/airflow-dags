@@ -13,6 +13,14 @@ default_args = {
     'retry_delay': timedelta(minutes=5),
 }
 
+with DAG(
+    'pip_list',
+    default_args=default_args,
+    description='return pip list',
+    schedule=timedelta(days=1),  # было schedule_interval
+    catchup=False,
+) as dag:
+
     show_packages = BashOperator(
         task_id="show_packages",
         bash_command="pip3 list"
